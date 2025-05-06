@@ -4,11 +4,6 @@
     <strong>Hamcrest matchers that work natively with PHPUnit</strong>
 </p>
 
-<!--
-TODO: Make sure the following URLs are correct and working for your project.
-      Then, remove these comments to display the badges, giving users a quick
-      overview of your package.
-
 <p align="center">
     <a href="https://github.com/rest-certain/hamcrest-phpunit"><img src="https://img.shields.io/badge/source-rest--certain/hamcrest--phpunit-blue.svg?style=flat-square" alt="Source Code"></a>
     <a href="https://packagist.org/packages/rest-certain/hamcrest-phpunit"><img src="https://img.shields.io/packagist/v/rest-certain/hamcrest-phpunit.svg?style=flat-square&label=release" alt="Download Package"></a>
@@ -17,19 +12,26 @@ TODO: Make sure the following URLs are correct and working for your project.
     <a href="https://github.com/rest-certain/hamcrest-phpunit/actions/workflows/continuous-integration.yml"><img src="https://img.shields.io/github/actions/workflow/status/rest-certain/hamcrest-phpunit/continuous-integration.yml?branch=main&style=flat-square&logo=github" alt="Build Status"></a>
     <a href="https://codecov.io/gh/rest-certain/hamcrest-phpunit"><img src="https://img.shields.io/codecov/c/gh/rest-certain/hamcrest-phpunit?label=codecov&logo=codecov&style=flat-square" alt="Codecov Code Coverage"></a>
 </p>
--->
 
 ## About
 
-<!--
-TODO: Use this space to provide more details about your package. Try to be
-      concise. This is the introduction to your package. Let others know what
-      your package does and how it can help them build applications.
--->
+This library provides [Hamcrest](https://hamcrest.org) matchers that return
+[PHPUnit](https://phpunit.de) `Constraint` instances, allowing the matchers to
+be used anywhere a PHPUnit constraint is allowed.
 
-This project adheres to a [code of conduct](CODE_OF_CONDUCT.md).
-By participating in this project and its community, you are expected to
-uphold this code.
+This is not an official Hamcrest project and has no affiliation with
+[hamcrest.org](https://hamcrest.org). The *matchers* this library provides are
+not true Hamcrest matchers in that they do not return Hamcrest `Matcher` instances,
+as [defined by the Hamcrest project](https://hamcrest.org/JavaHamcrest/tutorial#writing-custom-matchers).
+Instead, the functions in this library return `Constraint` instances, for use
+with PHPUnit.
+
+This project adheres to a [code of conduct](CODE_OF_CONDUCT.md). By participating
+in this project and its community, you are expected to uphold this code.
+
+> [!TIP]
+> Check out the **official** PHP port of Hamcrest Matchers:
+> [hamcrest/hamcrest-php](https://packagist.org/packages/hamcrest/hamcrest-php)!
 
 ## Installation
 
@@ -39,20 +41,35 @@ Install this package as a development dependency using [Composer](https://getcom
 composer require --dev rest-certain/hamcrest-phpunit
 ```
 
-<!--
 ## Usage
 
-Provide a brief description or short example of how to use this library.
-If you need to provide more detailed examples, use the `docs/` directory
-and provide a link here to the documentation.
+This library provides all Hamcrest matchers as static methods on the
+`RestCertain\Hamcrest\Matchers` class and also as functions in the
+`RestCertain\Hamcrest` namespace. These methods and functions may be used within
+the context of PHPUnit tests.
 
 ``` php
-use RestCertain\Hamcrest\Example;
+use PHPUnit\Framework\TestCase;
 
-$example = new Example();
-echo $example->greet('fellow human');
+use function RestCertain\Hamcrest\assertThat;
+use function RestCertain\Hamcrest\both;
+use function RestCertain\Hamcrest\containsStringIgnoringCase;
+use function RestCertain\Hamcrest\isA;
+use function RestCertain\Hamcrest\startsWithIgnoringCase;
+
+class ExampleTest extends TestCase
+{
+    public function testExample(): void
+    {
+        assertThat(
+            'The quick brown fox jumps over the lazy dog',
+            both(isA('string'))
+                ->and(startsWithIgnoringCase('the'))
+                ->and(containsStringIgnoringCase('FOX')),
+        );
+    }
+}
 ```
--->
 
 ## Contributing
 
