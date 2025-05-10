@@ -20,6 +20,7 @@ use Stringable;
 use stdClass;
 
 use function RestCertain\Hamcrest\aMapWithSize;
+use function RestCertain\Hamcrest\additionallyDescribedAs;
 use function RestCertain\Hamcrest\allOf;
 use function RestCertain\Hamcrest\anArray;
 use function RestCertain\Hamcrest\anEmptyMap;
@@ -87,6 +88,35 @@ use function sqrt;
 
 class MatchersTest extends TestCase
 {
+    public function testAdditionallyDescribedAs(): void
+    {
+        assertThat(
+            'foo',
+            additionallyDescribedAs(
+                'The string should start with "%s".',
+                new StringStartsWith('f'),
+                'f',
+            ),
+        );
+    }
+
+    public function testAdditionallyDescribedAsWithFailure(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+        $this->expectExceptionMessage(
+            "Failed asserting that 'bar' starts with \"f\".\nThe string should start with \"f\".",
+        );
+
+        assertThat(
+            'bar',
+            additionallyDescribedAs(
+                'The string should start with "%s".',
+                new StringStartsWith('f'),
+                'f',
+            ),
+        );
+    }
+
     public function testAllOf(): void
     {
         assertThat('myValue', allOf(new StringStartsWith('my'), new StringContains('Val')));

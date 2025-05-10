@@ -32,6 +32,33 @@ use RestCertain\Hamcrest\Xml\NamespaceContext;
 // phpcs:disable Squiz.Functions.GlobalFunction.Found
 
 /**
+ * Similar to {@see \RestCertain\Hamcrest\describedAs()}, `additionallyDescribedAs()` wraps an existing matcher, but
+ * instead of overriding the description, it appends to it, enhancing it and adding additional context. All other
+ * functions are delegated to the decorated matcher.
+ *
+ * For example:
+ *
+ * ```
+ * additionallyDescribedAs(
+ *     'This additional context supplements the matcher\'s existing failure message.',
+ *     equalTo($myBigDecimal),
+ * );
+ * ```
+ *
+ * @see Constraint::additionalFailureDescription()
+ *
+ * @param string $additionalDescription The additional description to add to the wrapped matcher. This may be a
+ *     formatted string including conversion specifications, as used by {@see sprintf()}; you may use the `$values`
+ *     arguments to insert values into the formatted description.
+ * @param mixed $matcher A value or {@see Constraint} to match against.
+ * @param mixed ...$values Values to insert into the description if it is an {@see sprintf()}-formatted string.
+ */
+function additionallyDescribedAs(string $additionalDescription, mixed $matcher, mixed ...$values): Constraint
+{
+    return Matchers::additionallyDescribedAs($additionalDescription, $matcher, ...$values);
+}
+
+/**
  * Creates a matcher that matches if the examined value matches **ALL** of the specified matchers.
  *
  * For example:

@@ -35,19 +35,13 @@ use function is_string;
 use function sprintf;
 
 /**
- * Wraps an existing matcher, overriding its description with that specified. All other functions are delegated to
- * the decorated matcher.
+ * Similar to {@see DescribedConstraint}, AdditionallyDescribedConstraint wraps an existing matcher, but instead of
+ * overriding the description, it appends to it, enhancing it and adding additional context. All other functions are
+ * delegated to the decorated matcher.
  *
- * The beginning of failure messages is "Failed asserting that" in most cases. The description provided here should
- * return the second part of that sentence. (See also {@see Constraint::failureDescription()}.)
- *
- * For example:
- *
- * ```
- * describedAs('value is a big decimal with the value %s', equalTo($myBigDecimal), $myBigDecimal->toString());
- * ```
+ * @see Constraint::additionalFailureDescription
  */
-final class DescribedConstraint extends Constraint
+final class AdditionallyDescribedConstraint extends Constraint
 {
     private readonly Constraint $constraint;
 
@@ -57,13 +51,13 @@ final class DescribedConstraint extends Constraint
     private readonly array $values;
 
     /**
-     * @param string $description The new description for the wrapped matcher. This may be a formatted string including
-     *     conversion specifications, as used by {@see sprintf()}; you may use the `$values` arguments to insert values
-     *     into the formatted description.
+     * @param string $additionalDescription The additional description to add to the wrapped matcher. This may be a
+     *     formatted string including conversion specifications, as used by {@see sprintf()}; you may use the `$values`
+     *     arguments to insert values into the formatted description.
      * @param mixed $constraint A value or {@see Constraint} to test against.
      * @param mixed ...$values Values to insert into the description if it is an {@see sprintf()}-formatted string.
      */
-    public function __construct(private readonly string $description, mixed $constraint, mixed ...$values)
+    public function __construct(private readonly string $additionalDescription, mixed $constraint, mixed ...$values)
     {
         if (!$constraint instanceof Constraint) {
             $constraint = new IsEqual($constraint);
@@ -75,10 +69,10 @@ final class DescribedConstraint extends Constraint
 
     #[Override] public function toString(): string
     {
-        return '';
+        return $this->constraint->toString();
     }
 
-    #[Override] protected function failureDescription(mixed $other): string
+    #[Override] protected function additionalFailureDescription(mixed $other): string
     {
         $exportedValues = [];
         foreach ($this->values as $value) {
@@ -91,10 +85,10 @@ final class DescribedConstraint extends Constraint
         }
 
         if ($exportedValues !== []) {
-            return sprintf($this->description, ...$exportedValues);
+            return sprintf($this->additionalDescription, ...$exportedValues);
         }
 
-        return $this->description;
+        return $this->additionalDescription;
     }
 
     #[Override] protected function matches(mixed $other): bool

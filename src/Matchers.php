@@ -47,6 +47,7 @@ use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\NativeType;
+use RestCertain\Hamcrest\Constraint\AdditionallyDescribedConstraint;
 use RestCertain\Hamcrest\Constraint\Cardinality\GreaterThanOrEqualTo;
 use RestCertain\Hamcrest\Constraint\CombinedConstraint;
 use RestCertain\Hamcrest\Constraint\DescribedConstraint;
@@ -74,6 +75,36 @@ use function assert;
 
 final class Matchers
 {
+    /**
+     * Similar to {@see self::describedAs()}, `additionallyDescribedAs()` wraps an existing matcher, but instead of
+     * overriding the description, it appends to it, enhancing it and adding additional context. All other functions are
+     * delegated to the decorated matcher.
+     *
+     * For example:
+     *
+     * ```
+     * additionallyDescribedAs(
+     *     'This additional context supplements the matcher\'s existing failure message.',
+     *     equalTo($myBigDecimal),
+     * );
+     * ```
+     *
+     * @see Constraint::additionalFailureDescription()
+     *
+     * @param string $additionalDescription The additional description to add to the wrapped matcher. This may be a
+     *     formatted string including conversion specifications, as used by {@see sprintf()}; you may use the `$values`
+     *     arguments to insert values into the formatted description.
+     * @param mixed $matcher A value or {@see Constraint} to match against.
+     * @param mixed ...$values Values to insert into the description if it is an {@see sprintf()}-formatted string.
+     */
+    public static function additionallyDescribedAs(
+        string $additionalDescription,
+        mixed $matcher,
+        mixed ...$values,
+    ): Constraint {
+        return new AdditionallyDescribedConstraint($additionalDescription, $matcher, ...$values);
+    }
+
     /**
      * Creates a matcher that matches if the examined value matches **ALL** of the specified matchers.
      *
