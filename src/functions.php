@@ -710,6 +710,8 @@ function hasKey(mixed $keyMatcher): Constraint
  * ```
  * assertThat('text', hasLength(4));
  * ```
+ *
+ * @internal Not yet implemented.
  */
 function hasLength(Constraint | int $lengthMatcher): Constraint
 {
@@ -726,6 +728,8 @@ function hasLength(Constraint | int $lengthMatcher): Constraint
  * assertThat(myObject, hasProperty('foo'));
  * assertThat(myObject, hasProperty('foo', equalTo('bar')));
  * ```
+ *
+ * @internal Not yet implemented.
  */
 function hasProperty(string $propertyName, mixed $valueMatcher = null): Constraint
 {
@@ -754,6 +758,8 @@ function hasSize(Constraint | int $sizeMatcher): Constraint
  * ```
  * assertThat(true, hasToString(equalTo('1')));
  * ```
+ *
+ * @internal Not yet implemented.
  */
 function hasToString(Constraint | string $toStringMatcher): Constraint
 {
@@ -790,14 +796,16 @@ function hasValue(mixed $valueMatcher): Constraint
  * For example:
  *
  * ```
- * assertThat(xml, hasXPath('/root/something[2]/cheese'));
- * assertThat(xml, hasXPath('/root/something[2]/cheese', equalTo('Cheddar')));
- * assertThat(xml, hasXPath(
+ * assertThat($xml, hasXPath('/root/something[2]/cheese'));
+ * assertThat($xml, hasXPath('/root/something[2]/cheese', equalTo('Cheddar')));
+ * assertThat($xml, hasXPath(
  *     '/ns:root/ns:something[2]/ns:cheese',
  *     is(equalTo('Cheddar')),
  *     new NamespaceContext(prefix: 'ns', uri: 'http://example.com/ns'),
  * ));
  * ```
+ *
+ * @internal Not yet implemented.
  *
  * @param string $xpath The XPath query to match against.
  * @param mixed $valueMatcher A value or {@see Constraint} to match against.
@@ -1061,6 +1069,8 @@ function sameInstance(mixed $object): Constraint
  * assertThat(myObject, samePropertyValuesAs(otherObject));
  * assertThat(myObject, samePropertyValuesAs(otherObject, 'age', 'height'));
  * ```
+ *
+ * @internal Not yet implemented.
  */
 function samePropertyValuesAs(object $other, string ...$ignoredProperties): Constraint
 {
@@ -1106,6 +1116,8 @@ function startsWithIgnoringCase(string $substring): Constraint
  * ```
  *
  * This fails as "foo" occurs before "bar" in the string "myfoobarbaz"
+ *
+ * @internal Not yet implemented.
  */
 function stringContainsInOrder(string ...$substrings): Constraint
 {
